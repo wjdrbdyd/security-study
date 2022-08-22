@@ -1,0 +1,29 @@
+
+spring:
+  profiles:
+    active: local
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/security-study
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        # show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        default_batch_fetch_size: 500
+
+logging.level:
+  org.hibernate.SQL: debug
+  com.tutorial : debug
+  # org.hibernate.type: trace
+
+# HS512 ????? ??? ??? ??? 512bit, ? 64byte ??? secret key? ???? ??.
+# Secret ?? ?? ???? Base64 ? ???? ? ?? (?? ???? ???? ??? ??? ??)
+# $ echo 'spring-boot-security-jwt-tutorial-jiwoon-spring-boot-security-jwt-tutorial' | base64
+jwt:
+  secret: 1a110609a6dd4e19d6b7defadd8c2255ad0a499c2b0991ab2df46988f6c894a135a3e44f3efdbaa29f7b1ae6d8955b171afcb0084070fe43bc910ec461231f41
