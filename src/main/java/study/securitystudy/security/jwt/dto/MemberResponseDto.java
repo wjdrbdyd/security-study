@@ -1,15 +1,13 @@
 package study.securitystudy.security.jwt.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import study.securitystudy.entity.Member;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class MemberResponseDto {
     private String email;
     private String nickname;

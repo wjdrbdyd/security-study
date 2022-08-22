@@ -1,11 +1,12 @@
 package study.securitystudy.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import study.securitystudy.entity.enums.Authority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+
+
 
 @Entity
 @Getter
@@ -15,7 +16,7 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    private Long id;
 
     @Column(nullable = false)
     private String email;
@@ -29,15 +30,15 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-    public void setNickname(String username) {
-        this.nickname = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public void setPassword(String password) { this.password = password; }
 
     @Builder
-    public Member(Long memberId, String email, String password, String nickname, Authority authority) {
-        this.memberId = memberId;
+    public Member(Long id, String email, String password, String nickname, Authority authority) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.nickname = nickname;

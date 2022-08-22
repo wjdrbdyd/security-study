@@ -25,6 +25,8 @@ public class ArticleController {
 
     @PostMapping("/")
     public ResponseEntity<ArticleResponseDto> createArticle(@RequestBody CreateArticleRequestDto requestDto) {
+        System.out.println("requestDto = " + requestDto.toString());
+        System.out.println("requestDto = " + requestDto);
         return ResponseEntity.ok(articleService.postArticle(requestDto.getTitle(), requestDto.getBody()));
     }
 

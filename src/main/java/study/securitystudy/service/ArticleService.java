@@ -62,7 +62,6 @@ public class ArticleService {
     @Transactional
     public ArticleResponseDto postArticle(String title, String body) {
         Member member = isMemberCurrent();
-
         Article article = Article.createArticle(title, body, member);
         return ArticleResponseDto.of(articleRepository.save(article), true);
     }
@@ -81,6 +80,7 @@ public class ArticleService {
     }
 
     private Member isMemberCurrent() {
+        System.out.println("SecurityUtil.getCurrentMemberId() = " + SecurityUtil.getCurrentMemberId());
         return memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
     }
