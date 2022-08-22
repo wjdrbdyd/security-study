@@ -85,11 +85,14 @@ export const AuthContextProvider:React.FC<Props> = (props) => {
 
     const getUserHandler = () => {
         setIsGetSuccess(false);
+        console.log("getUserHandler : " + token)
         const data = authAction.getUserActionHandler(token);
         data.then((result) => {
+            console.log("get User Result")
             if(result !== null) {
                 console.log('get user start!');
                 const userData:UserInfo = result.data;
+                console.log('userData  : ' + userData.email)
                 setUserObj(userData);
                 setIsGetSuccess(true);
             }

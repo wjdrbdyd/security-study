@@ -13,22 +13,24 @@ const ChangeUsername = () => {
         const enteredNickname = nicknameInputRef.current!.value;
         console.log('change nickname start!');
         authCtx.changeNickname(enteredNickname);
+
         if (authCtx.isSuccess) {
           alert("변경 되었습니다.");
-          authCtx.getUser();
+        //   authCtx.getUser();
           navigate("/", { replace: true });
         }
       }
-
+      console.log('change')
+    console.log(authCtx.userObj)
 
     return (
         <form onSubmit={submitHandler} className={classes.form}>
             <div className={classes.control}>
-                <label htmlFor='username'>New Nickname</label>
-                <input type='text' id='username'minLength={3} required ref={nicknameInputRef}/>
+                <label htmlFor='nickname'>New Nickname</label>
+                <input type='text' id='nickname'minLength={3} required ref={nicknameInputRef}/>
             </div>
             <div className={classes.action}>
-                <button type='submit'>Change Username</button>
+                <button type='submit'>Change nickname</button>
             </div>
         </form>
     );

@@ -2,12 +2,13 @@ import React, { useContext } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Article from './components/article/Article';
 import Layout from './components/layout/Layout';
-import ArticleWritePage from './pages/ArticleWritePage';
+import ArticleWritePage from './components/article/ArticleWritePage';
 import AuthPage from './pages/AuthPage';
 import CreateAccountPage from './pages/CreateAccountPage';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import AuthContext from './store/auth-context';
+import ArticleList from './components/article/ArticleList';
 
 function App() {
 
@@ -20,7 +21,10 @@ function App() {
         <Route path="/signup/*" element={authCtx.isLoggedIn ? <Navigate to='/' /> : <CreateAccountPage /> } />
         <Route path="/login/*" element={authCtx.isLoggedIn ? <Navigate to='/' /> : <AuthPage /> } />
         <Route path="/profile/*" element={!authCtx.isLoggedIn ? <Navigate to='/' /> : <ProfilePage /> }/>
-        <Route path="/article/*" element={ <Article />} />
+        <Route element={ <Article />}>
+          <Route path="/article" element={ <ArticleList /> } />
+          <Route path="/article/write" element={ <ArticleWritePage />} />
+        </Route>
       </Routes>
     </Layout>
   );

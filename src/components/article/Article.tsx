@@ -1,9 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, Outlet, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
-import ArticleWritePage from '../../pages/ArticleWritePage';
+import ArticleWritePage from './ArticleWritePage';
 import { GET } from '../../store/fetch-auth-action';
+import ArticleList from './ArticleList';
+import AuthContext from '../../store/auth-context';
 
 const ArticleContainer = styled.div`
     width: 100%;
@@ -19,38 +21,31 @@ const ArticleTop = styled.div`
     
     }
 `
-const ArticleList = styled.div`
-    
-`
-const ArticleItem = styled.div`
-    
-`
+
 const Article = () => {
 
     const [articles, setArticles] = useState([]);
+    const authCtx = useContext(AuthContext);
+
 
     useEffect( () => {
         const URL = '/article/page?page=1';
         axios.get(URL)
         .then(response => {
             console.log('start')
-            console.log(response.data);
+
         });
-
+        authCtx.getUser();
     }, [])
-
+    console.log('article')
+    console.log(authCtx.userObj)
     return (
         <ArticleContainer>
             <ArticleTop>
                 <h2>게시글 테스트</h2>
                 <Link to="/article/write">게시글 생성</Link>
             </ArticleTop>
-            <ArticleWritePage />
-            <ArticleList>
-                <ArticleItem>
-
-                </ArticleItem>
-            </ArticleList>
+            <Outlet></Outlet>
         </ArticleContainer>
     );
 };
