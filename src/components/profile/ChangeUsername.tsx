@@ -11,17 +11,16 @@ const ChangeUsername = () => {
     const submitHandler = (event: React.FormEvent) => {
         event.preventDefault();
         const enteredNickname = nicknameInputRef.current!.value;
-        console.log('change nickname start!');
+
         authCtx.changeNickname(enteredNickname);
 
         if (authCtx.isSuccess) {
           alert("변경 되었습니다.");
-        //   authCtx.getUser();
+          authCtx.getUser();
           navigate("/", { replace: true });
         }
       }
-      console.log('change')
-    console.log(authCtx.userObj)
+
 
     return (
         <form onSubmit={submitHandler} className={classes.form}>

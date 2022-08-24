@@ -24,21 +24,6 @@ const ArticleTop = styled.div`
 
 const Article = () => {
 
-    const [articles, setArticles] = useState([]);
-    const authCtx = useContext(AuthContext);
-
-
-    useEffect( () => {
-        const URL = '/article/page?page=1';
-        axios.get(URL)
-        .then(response => {
-            console.log('start')
-
-        });
-        authCtx.getUser();
-    }, [])
-    console.log('article')
-    console.log(authCtx.userObj)
     return (
         <ArticleContainer>
             <ArticleTop>

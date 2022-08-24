@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import AuthContext from './store/auth-context';
 import ArticleList from './components/article/ArticleList';
+import ArticleDetail from './components/article/ArticleDetail';
 
 function App() {
 
@@ -22,8 +23,9 @@ function App() {
         <Route path="/login/*" element={authCtx.isLoggedIn ? <Navigate to='/' /> : <AuthPage /> } />
         <Route path="/profile/*" element={!authCtx.isLoggedIn ? <Navigate to='/' /> : <ProfilePage /> }/>
         <Route element={ <Article />}>
-          <Route path="/article" element={ <ArticleList /> } />
+          <Route path="/article/" element={ <ArticleList /> } />
           <Route path="/article/write" element={ <ArticleWritePage />} />
+          <Route path="/article/detail/:articleId" element={ <ArticleDetail /> } />
         </Route>
       </Routes>
     </Layout>

@@ -23,7 +23,7 @@ const AuthForm = () => {
         setIsLoading(false);
 
         if(authCtx.isSuccess) {
-            navigate("/", { replace: true });
+            navigate("/article", { replace: true });
         }
     }
     return (
