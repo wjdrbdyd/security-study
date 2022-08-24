@@ -76,7 +76,7 @@ const ArticleWritePage = () => {
     const onChange = (event: any, editor: any) => {
         setBodyValue(editor.getData());
     }
-    console.log(bodyValue)
+
     return (
         <WriteContainer>
             <form onSubmit={submitHandler}>

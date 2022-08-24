@@ -3,22 +3,26 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import styled from 'styled-components';
 
-export const SCkEditor = styled.div`
+interface ISck {
+    height?: string;
+}
+export const SCkEditor = styled.div<ISck>`
     width: 90%;
     margin-bottom: 70px;
     .ck-editor__editable_inline {
-        height: 350px;
+        height: ${props => props.height ? props.height : "350px"};
     }
 `
 interface IProps {
+    height?: string;
     onChange?: any;
     data?: string;
     editing?: boolean;
 }
-const CustomCkEditor = ({onChange, data, editing}:IProps) => {
+const CustomCkEditor = ({height, onChange, data, editing}:IProps) => {
 
     return (
-        <SCkEditor>
+        <SCkEditor height={height}>
             <CKEditor 
                 disabled = {editing}
                 editor={ ClassicEditor }

@@ -8,6 +8,7 @@ import Parser, { Comment } from 'html-react-parser';
 import {BsFillPersonFill} from 'react-icons/bs';
 import {AiTwotoneCalendar} from 'react-icons/ai';
 import CommentList from '../comment/CommentList';
+import CommentWritePage from '../comment/CommentWritePage';
 const WriteContainer = styled.div`
     background-color: white;
     width: 90%;
@@ -80,7 +81,7 @@ interface IArticle {
 const ArticleDetail = () => {
     const [article, setArticle] = useState<IArticle>();
     const [title, setTitle] = useState<string>();
-
+    const [reply, setReply] = useState<boolean>(false);
     const [bodyValue, setBodyValue] = useState();
     const authCtx = useContext(AuthContext);
     const token = authCtx.token;
@@ -101,8 +102,9 @@ const ArticleDetail = () => {
 
     const submitHandler = async (event : React.FormEvent) => {
         event.preventDefault(); 
+        console.log('테스트');
         const URL = "/article/";
-   
+        
         const body = bodyValue;
         const updateReq = {id: articleId, title, body};
         const  headers = {
@@ -132,19 +134,20 @@ const ArticleDetail = () => {
                     <div><AiTwotoneCalendar />수정일 : {article?.lastModifiedDt}</div>
                 </PostTop>
                 <Body>
+                
                     <label htmlFor='content'>내용</label>
                     { editing ? 
                         <CustomCkEditor onChange={onChange} data={article?.articleBody} editing={!editing} />
                         : <div>{article && Parser(article?.articleBody)}</div>
                     }
-                    
                 </Body>
-                </>
-                <Buttons>
+                
+                { !reply &&
+                    <Buttons>
                     { !editing ? (
                         <>                        
                         <Button onClick={()=> setEditing(true)} type={"button"}  color={"#eee"}>편집</Button>
-                        <Button onClick={()=> setEditing(true)} type={"button"}  color={"#eee"}>답글</Button>
+                        <Button onClick={()=> setReply((prev) => !prev)} type={"button"}  color={"#eee"}>답글</Button>
                         <Button onClick={()=> navigate("/article")} type={"button"} color={"#eee"}>목록</Button>
                         </>
                     )
@@ -153,9 +156,12 @@ const ArticleDetail = () => {
                         <Button type={"submit"} color={"#eee"}>수정</Button>
                         <Button onClick={()=> setEditing(false)} type={"button"} color={"#eee"}>취소</Button>
                         </>
-                    )}
-                </Buttons>
+                        )}
+                    </Buttons>
+                }
+                </>
             </form>
+            {/* {reply && <CommentWritePage articleId={articleId!} setReply={setReply}/>} */}
             <CommentList articleId={parseFloat(articleId!)}/>
         </WriteContainer>
 

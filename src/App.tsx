@@ -10,6 +10,7 @@ import ProfilePage from './pages/ProfilePage';
 import AuthContext from './store/auth-context';
 import ArticleList from './components/article/ArticleList';
 import ArticleDetail from './components/article/ArticleDetail';
+import CommentWritePage from './components/comment/CommentWritePage';
 
 function App() {
 

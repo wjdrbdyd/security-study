@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-
+import Parser from 'html-react-parser';
 interface IProps {
     articleId: number;
 }
@@ -17,13 +17,17 @@ const CommentList = ({articleId}:IProps) => {
     useEffect(()=>{
         axios.get(`/comment/list?id=${articleId}` )
         .then(response => {
-            setComments(prev => [...prev]);
+            setComments(prev => [...prev, response.data ]);
         })
     }, []);
 
     return (
         <div>
-            댓글영역
+            {comments?.map((comment) => {
+                return (
+                    <div>{comment && Parser(comment?.commentBody)}</div>
+                )
+            })}
         </div>
     );
 };
