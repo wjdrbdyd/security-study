@@ -1,34 +1,87 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Parser from 'html-react-parser';
+import styled from 'styled-components';
+import AuthContext from '../../store/auth-context';
+
 interface IProps {
     articleId: number;
+    comments: Comment[];
+    setComments: Function;
 }
 
 interface Comment {
     commentId: number;
     memberNickname: string;
     commentBody: string;
-    createdDt: number;
-    isWritten: boolean;
+    createdDt: Date;
+    written: boolean;
 }
-const CommentList = ({articleId}:IProps) => {
-    const [comments, setComments] = useState<Comment[]>([]);
+
+const SCommments = styled.ul`
+    background-color: #eee;
+    padding: 10px 20px;
+`
+const CommentHeader = styled.h2`
+    font-size: 22px;
+    border-bottom: 1px solid rgba(1,1,1,0.2);
+    padding-bottom: 20px;
+`
+const CommentItem = styled.li`
+    border-bottom: 1px solid rgba(1,1,1,0.2);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    div {
+        display: flex;
+        flex-direction: column;
+    }
+`
+const CommentList = ({articleId, comments, setComments}:IProps) => {
+
     useEffect(()=>{
         axios.get(`/comment/list?id=${articleId}` )
         .then(response => {
-            setComments(prev => [...prev, response.data ]);
+            setComments(response.data);
         })
     }, []);
+  
+    const authCtx = useContext(AuthContext);
+    const token = authCtx.token;
+    const deleteComment = async (commentId:number) =>  {
+        const  headers = {
+            'Authorization': 'Bearer ' + token
+        };
 
+        await axios.delete(`/comment/one?id=${commentId}`, {headers})
+        .then(response => {
+            const newArr = comments.filter(comment => comment.commentId !== commentId);
+
+            console.log("newarr")
+            console.log(newArr);
+            setComments([...newArr]);
+        })
+    }
+    console.log("comments")
+    console.log(comments)
     return (
-        <div>
+        <SCommments>
+            <CommentHeader>
+                댓글
+            </CommentHeader>
             {comments?.map((comment) => {
                 return (
-                    <div>{comment && Parser(comment?.commentBody)}</div>
+                    <CommentItem >
+                        <p>{comment && Parser(comment?.commentBody)}</p>
+                        <div>
+                            <span>작성자:{comment?.memberNickname}</span>
+                            <span>생성일:{comment?.createdDt.toString()}</span>
+                        </div>
+                        <button onClick={(e)=>deleteComment(comment.commentId)}>삭제</button>
+                    </CommentItem>
                 )
             })}
-        </div>
+        </SCommments>
     );
 };
 

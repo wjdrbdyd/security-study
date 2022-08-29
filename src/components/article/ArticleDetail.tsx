@@ -4,7 +4,7 @@ import CustomCkEditor from './CustomCkEditor';
 import axios from 'axios';
 import AuthContext from '../../store/auth-context';
 import { useNavigate, useParams } from 'react-router-dom';
-import Parser, { Comment } from 'html-react-parser';
+import Parser from 'html-react-parser';
 import {BsFillPersonFill} from 'react-icons/bs';
 import {AiTwotoneCalendar} from 'react-icons/ai';
 import CommentList from '../comment/CommentList';
@@ -69,6 +69,7 @@ const PostTop = styled.div`
     border-top: 1px solid black;
     border-bottom: 1px solid #eee;
 `
+
 interface IArticle {
     articleBody: string;
     articleId: number;
@@ -78,10 +79,18 @@ interface IArticle {
     memberNickname: string;
     written: boolean;
 }
+interface Comment {
+    commentId: number;
+    memberNickname: string;
+    commentBody: string;
+    createdDt: Date;
+    written: boolean;
+}
 const ArticleDetail = () => {
     const [article, setArticle] = useState<IArticle>();
     const [title, setTitle] = useState<string>();
     const [reply, setReply] = useState<boolean>(false);
+    const [comments, setComments] = useState<Comment[]>([]);
     const [bodyValue, setBodyValue] = useState();
     const authCtx = useContext(AuthContext);
     const token = authCtx.token;
@@ -161,8 +170,8 @@ const ArticleDetail = () => {
                 }
                 </>
             </form>
-            {/* {reply && <CommentWritePage articleId={articleId!} setReply={setReply}/>} */}
-            <CommentList articleId={parseFloat(articleId!)}/>
+            {reply && <CommentWritePage articleId={articleId!} setReply={setReply} comments={comments} setComments={setComments}/>}
+            {article && <CommentList articleId={parseFloat(articleId!)} comments={comments} setComments={setComments}/> }
         </WriteContainer>
 
         </>
