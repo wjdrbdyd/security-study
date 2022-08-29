@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, Outlet, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import ArticleWritePage from './ArticleWritePage';
-import { GET } from '../../store/fetch-auth-action';
+import { GET } from '../../store/fetch-action';
 import ArticleList from './ArticleList';
 import AuthContext from '../../store/auth-context';
 
