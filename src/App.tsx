@@ -8,9 +8,9 @@ import CreateAccountPage from './pages/CreateAccountPage';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import AuthContext from './store/auth-context';
-import ArticleList from './components/article/ArticleList';
 import ArticleDetail from './components/article/ArticleDetail';
-import CommentWritePage from './components/comment/CommentWritePage';
+import ArticleListPage from './pages/ArticleListPage';
+import ArticleDetailPage from './pages/ArticleDetailPage';
 
 function App() {
 
@@ -22,11 +22,11 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/signup/*" element={authCtx.isLoggedIn ? <Navigate to='/' /> : <CreateAccountPage /> } />
         <Route path="/login/*" element={authCtx.isLoggedIn ? <Navigate to='/' /> : <AuthPage /> } />
-        <Route path="/profile/*" element={!authCtx.isLoggedIn ? <Navigate to='/' /> : <ProfilePage /> }/>
+        <Route path="/profile/*" element={!authCtx.isLoggedIn ? <Navigate to='/article' /> : <ProfilePage /> }/>
         <Route element={ <Article />}>
-          <Route path="/article/" element={ <ArticleList /> } />
+          <Route path="/article/" element={ <ArticleListPage /> } />
           <Route path="/article/write" element={ <ArticleWritePage />} />
-          <Route path="/article/detail/:articleId" element={ <ArticleDetail /> } />
+          <Route path="/article/detail/:articleId" element={ <ArticleDetailPage /> } />
         </Route>
       </Routes>
     </Layout>

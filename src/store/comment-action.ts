@@ -8,7 +8,7 @@ type Comment = {
 const createTokenHeader = (token: string) => {
     return {
         headers: {
-            'Authorization': 'Bearer ' + token; 
+            'Authorization': 'Bearer ' + token
         }
     }
 }

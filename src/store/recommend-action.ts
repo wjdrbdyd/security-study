@@ -3,7 +3,7 @@ import { DELETE, GET, POST } from "./fetch-action";
 const createTokenHeader = (token: string) => {
     return {
         headers: {
-            'Authorization': 'Bearer ' + token; 
+            'Authorization': 'Bearer ' + token
         }
     }
 }
