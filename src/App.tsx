@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Article from './components/article/Article';
 import Layout from './components/layout/Layout';
-import ArticleWritePage from './components/article/ArticleWritePage';
+import ArticleWritePage from './components/article/CreateArticleForm';
 import AuthPage from './pages/AuthPage';
 import CreateAccountPage from './pages/CreateAccountPage';
 import HomePage from './pages/HomePage';
@@ -20,14 +20,21 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        
         <Route path="/signup/*" element={authCtx.isLoggedIn ? <Navigate to='/' /> : <CreateAccountPage /> } />
         <Route path="/login/*" element={authCtx.isLoggedIn ? <Navigate to='/' /> : <AuthPage /> } />
-        <Route path="/profile/*" element={!authCtx.isLoggedIn ? <Navigate to='/article' /> : <ProfilePage /> }/>
-        <Route element={ <Article />}>
+        <Route path="/profile" element={!authCtx.isLoggedIn ? <Navigate to='/article' /> : <ProfilePage /> }/>
+
+
+        <Route path="/page/:pageId" element={<ArticleListPage />}/>
+        <Route path="/create" element={authCtx.isLoggedIn ? <CreateArticlePage /> : <Navigate to='/' /> } />
+        <Route path="/update/:articleId" element={authCtx.isLoggedIn ? <UpdateArticlePage /> : <Navigate to='/' /> } />
+        <Route path="/article/:articleId" element={<ArticleDetailPage /> }/>
+        {/* <Route element={ <Article />}>
           <Route path="/article/" element={ <ArticleListPage /> } />
           <Route path="/article/write" element={ <ArticleWritePage />} />
           <Route path="/article/detail/:articleId" element={ <ArticleDetailPage /> } />
-        </Route>
+        </Route> */}
       </Routes>
     </Layout>
   );

@@ -13,9 +13,12 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
+    "bootstrap": "^5.2.2",
     "html-react-parser": "^3.0.4",
     "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.5.0",
+    "react-bootstrap-table-next": "^4.0.3",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-router-dom": "^6.3.0",
@@ -52,6 +55,7 @@
   "proxy": "http://localhost:8080",
   "devDependencies": {
     "@types/ckeditor__ckeditor5-build-classic": "^29.0.1",
+    "@types/react-bootstrap-table-next": "^4.0.18",
     "@types/styled-components": "^5.1.26"
   }
 }

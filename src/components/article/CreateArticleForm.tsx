@@ -1,6 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
 import styled from 'styled-components';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import CustomCkEditor, { SCkEditor } from './CustomCkEditor';
 import axios from 'axios';
 import AuthContext from '../../store/auth-context';
@@ -53,7 +52,7 @@ const Button = styled.button`
     cursor: pointer;
 `
 
-const ArticleWritePage = () => {
+const CreateArticleForm = () => {
     const [title, setTitle] = useState('');
     const authCtx = useContext(AuthContext);
     const titleRef = useRef<HTMLInputElement>(null);
@@ -97,4 +96,4 @@ const ArticleWritePage = () => {
     );
 };
 
-export default ArticleWritePage;
+export default CreateArticleForm;

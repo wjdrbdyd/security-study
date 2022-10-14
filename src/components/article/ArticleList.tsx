@@ -1,108 +1,94 @@
-import axios from 'axios';
-import React, { MouseEventHandler, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import BootStrapTable from 'react-bootstrap-table-next';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import ArticleContext from '../../store/article-context';
+import AuthContext from '../../store/auth-context';
+import { Button } from 'react-bootstrap';
+import Paging from './Paging';
 
-const ArticleTable = styled.table`
-  border: none;
-  border-collapse: collapse;
-  margin-top: 20px;
-  width: 100%;
-  
-  td, th {
-    border: none;
-    color:black;
-  }
-
-  th, td {
-    padding: 5px 10px;
-    text-align: center;
-  }
-
-  tbody tr {
-    :nth-of-type(odd) {
-      background-color: #efefef;
-    }
-    :hover {
-      background-color: lightpink;
-    }
-  }
-  thead > tr {
-    background-color: #c2c2c2;
-  }
-
-`
-
-const titles = ['아이디', '제목', '작성자', '생성일'];
-
-interface Articles  {
-  content: ArticleContent[];
-  size: number;
-  totalPages: number;
-}
-interface ArticleContent {
-  articleId: number;
-  articleTitle: string;
-  memberNickname: string;
-  createdDt: number;
+type Props = {
+  item: string | undefined
 }
 
-const ArticleList = () => {
+type ArticleInfo = {
+  articleId: number,
+  memberNickname: string,
+  articleTitle: string,
+  articleBody?: string,
+  createdDt: string,
+  lastModifiedDt?: string,
+  isWritten?: boolean
+}
 
-    const [articlePages, setArticlePages] = useState<Articles>();
 
-    useEffect(()=>{
-     
-        axios.get('/article/page?page=1')
-        .then(response => {
-            const {content, size, totalPages} = response.data;
-            setArticlePages({content, size, totalPages});
-        })
+const ArticleList:React.FC<Props> = ({item}) => {
+
+    let navigate = useNavigate();
+    const pageId = String(item);
+
+    const columns = [{
+      dataField: 'articleId',
+      text: '#',
+      headerStyle: () => {
+        return { width: "8%" };
+      }
+    }, {
+      dataField: 'articleTitle',
+      text: '제목',
+      headerStyle: () => {
+        return { width: "65%" };
+      },
+      events: {
+        onClick: (e:any, column: any, columnIndex: any, row: any, rowIndex: any) => {
+          const articleIdNum:string = row.articleId;
+          navigate(`../article/${articleIdNum}`);
+        }
+      }
+    }, {
+      dataField: 'memberNickname',
+      text: '닉네임',
+    }, {
+      dataField: 'createdDate',
+      text: '작성일'
+    }];
+    
+    const authCtx = useContext(AuthContext);
+    const articleCtx = useContext(ArticleContext);
+
+    const [articles, setArticles] = useState<ArticleInfo[]>([]);
+    const [maxNum, setMaxNum] = useState<number>(1);
+
+    let isLogin = authCtx.isLoggedIn;
+
+    const fetchListHandler = useCallback(() => {
+        articleCtx.getPageList(pageId);
     }, []);
+    
+    useEffect(() => {
+      fetchListHandler();
+    }, [fetchListHandler]);
+
+    useEffect(() => {
+      if (articleCtx.isSuccess) {
+        setArticles(articleCtx.page);
+        setMaxNum(articleCtx.totalPages);
+      }
+    }, [articleCtx])
 
     return (
-        <ArticleTable>
-          <ArticleHead />
-          {articlePages ? <ArticleBody  articles = {articlePages?.content} /> : null}
-          
-        </ArticleTable>
+        <div className={styles.list}>
+          <BootStrapTable keyField='id' data ={ articles } columns = { columns } />
+          <div>{isLogin &&
+            <Link to="/create">
+              <Button>글 작성</Button>
+            </Link>
+          }
+          </div>
+          <Paging currentPage={Number(pageId)} maxPage={maxNum} />
+        </div>
     );
 };
 
 export default ArticleList;
 
-const ArticleHead = () => {
-
-    return (
-        <thead>
-            <tr>
-                {titles.map((title, index) => (
-                <th key={index}>{title}</th>
-                ))}
-            </tr>
-        </thead>
-    )
-}
-const ArticleBody = ({articles} : {articles: Articles['content']}) :JSX.Element => {
-    const navigate = useNavigate();
-    const moveDetail = (articleId:number) => {
-      navigate(`/article/detail/${articleId}`);
-    }
-    return (
-        <>
-          <tbody>
-          {articles.map((article) =>{
-            return (
-              <tr onClick={() => moveDetail(article.articleId) }>
-                <td>{article.articleId}</td>
-                <td>{article.articleTitle}</td>
-                <td>{article.memberNickname}</td>
-                <td>{article.createdDt}</td>
-              </tr>
-            )
-          })}
-            
-          </tbody>
-        </>
-    )
-}
